@@ -9,7 +9,6 @@ bot = commands.Bot(command_prefix=[".","-"],intents=discord.Intents.all())
 @bot.event
 async def on_ready():
     print("Logged in as " + str(bot.user))
-    clearCmds.start()
 
 
 @bot.event
@@ -324,36 +323,8 @@ async def move(ctx, member: discord.Member = None, reason = ""):
     await member.move_to(ctx.author.voice.channel, reason=reason + f" by {ctx.author.name}#{ctx.author.discriminator}")
     await ctx.message.add_reaction("✅")
 
-@bot.command(name="sahra", aliases=["سهره"])
-@commands.has_guild_permissions(mute_members=True)
-async def sahra(ctx, member: discord.Member = None):
-    if member == None or isinstance(member,discord.Member) == False:
-        await ctx.reply("***Mention a member*** :question:", mention_author=False)
-        await ctx.message.add_reaction("❓")
-        return
-    
-    pic_role = ctx.guild.get_role(1047989966640263290) 
-    emoji_role = ctx.guild.get_role(1047989965344211078)
-    ni_role = ctx.guild.get_role(1047989967449759836) 
 
-    await member.add_roles(pic_role,emoji_role,ni_role) 
-    await ctx.message.add_reaction("✅")
-
-@bot.command(name="type", aliases=["اكتب"])
-@commands.has_permissions(manage_roles=True)
-async def type(ctx, member: discord.Member = None):
-    if member == None or isinstance(member,discord.Member) == False:
-        await ctx.reply("***Mention a member*** :question:", mention_author=False)
-        await ctx.message.add_reaction("❓")
-        return
-    
-    type_role = ctx.guild.get_role(1047989992800129056) 
-
-    await member.add_roles(type_role) 
-    await ctx.message.add_reaction("✅")
-
-
-@bot.command(name="color", aliases=["لون"])
+@bot.command(name="color", description="Change color")
 async def color(ctx, limit : int = None):
     if limit == None or limit > 20:
         await ctx.reply("***Pick a valid color number*** :question:", mention_author=False)
@@ -368,12 +339,6 @@ async def color(ctx, limit : int = None):
         color = discord.utils.get(ctx.guild.roles,name=str(limit))
         await ctx.message.author.add_roles(color)
         await ctx.message.add_reaction("✅")
-
-
-@tasks.loop(minutes=10.0)
-async def clearCmds():
-    channel = bot.get_channel(1047990019098423336)
-    await channel.purge(limit=None, check=lambda msg: not msg.pinned)
 
 
 bot.run("MTA0NDAxNTM3MTM2NTEyNjIxNA.GCM4rz.Il6pbgo4RHO99mJyaZ1dIyKukTO79FSouLCBp8")
